@@ -40,15 +40,11 @@ function App() {
   const [phase, setPhase] =
     useState("Idle");
 
-  // Exposure session toggle
-  const [showExposure, setShowExposure] =
-    useState(false);
-
   // Frontend timer
   const [elapsedTime, setElapsedTime] =
     useState("0.0");
 
-  // Realtime progress
+  // Realtime progress state
   const [progress, setProgress] =
     useState({
       phase: "Idle",
@@ -125,7 +121,7 @@ function App() {
         prepared.data.sessionId;
 
       /**
-       * Realtime polling.
+       * Start realtime polling.
        */
       progressRef.current =
         setInterval(async () => {
@@ -134,6 +130,11 @@ function App() {
               await axios.get(
                 `https://llm-search-optimizer-backend.onrender.com/experiment-progress/${sessionId}`,
               );
+
+            console.log(
+              "LIVE PROGRESS:",
+              progressRes.data,
+            );
 
             setProgress(progressRes.data);
           } catch (err) {
@@ -202,23 +203,6 @@ function App() {
           <b>Status:</b> {phase}
         </p>
 
-        <p>
-          <b>Current Phase:</b>{" "}
-          {progress.phase}
-        </p>
-
-        <p>
-          <b>Progress:</b>{" "}
-          {progress.completed} / {progress.total}
-        </p>
-
-        <p>
-          <b>Completion:</b>{" "}
-          {progress.percentage}%
-        </p>
-
-        {/* Progress bar */}
-
         <div className="progress-bar-background">
           <div
             className="progress-bar-fill"
@@ -232,6 +216,30 @@ function App() {
           <b>Live Exposure Timer:</b>{" "}
           {elapsedTime}s
         </p>
+
+        {/* HARDCODED REALTIME DEBUG BLOCK */}
+
+        <div className="realtime-progress">
+          <div>
+            REALTIME PHASE:
+            {" "}
+            {progress.phase}
+          </div>
+
+          <div>
+            REALTIME PROGRESS:
+            {" "}
+            {progress.completed}
+            {" / "}
+            {progress.total}
+          </div>
+
+          <div>
+            REALTIME COMPLETION:
+            {" "}
+            {progress.percentage}%
+          </div>
+        </div>
       </div>
 
       {/* INPUTS */}
