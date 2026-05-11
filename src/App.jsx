@@ -244,20 +244,16 @@ function App() {
           <b>Status:</b> {phase}
         </p>
 
-        <p>
-          <b>Current Phase:</b>{" "}
-          {progress.phase}
+        <p style={{ color: "red", fontWeight: "bold" }}>
+          Current Phase: {progress.phase}
         </p>
 
-        <p>
-          <b>Progress:</b>{" "}
-          {progress.completed} /
-          {progress.total}
+        <p style={{ color: "red", fontWeight: "bold" }}>
+          Progress: {progress.completed} / {progress.total}
         </p>
 
-        <p>
-          <b>Completion:</b>{" "}
-          {progress.percentage}%
+        <p style={{ color: "red", fontWeight: "bold" }}>
+          Completion: {progress.percentage}%
         </p>
 
         <div
