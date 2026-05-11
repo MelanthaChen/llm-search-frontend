@@ -220,24 +220,24 @@ function App() {
         {/* HARDCODED REALTIME DEBUG BLOCK */}
 
         <div className="realtime-progress">
-          <div>
-            REALTIME PHASE:
-            {" "}
-            {progress.phase}
+          <div className="progress-row">
+            <span>Phase</span>
+
+            <span>{progress.phase}</span>
           </div>
 
-          <div>
-            REALTIME PROGRESS:
-            {" "}
-            {progress.completed}
-            {" / "}
-            {progress.total}
+          <div className="progress-row">
+            <span>Progress</span>
+
+            <span>
+              {progress.completed} / {progress.total}
+            </span>
           </div>
 
-          <div>
-            REALTIME COMPLETION:
-            {" "}
-            {progress.percentage}%
+          <div className="progress-row">
+            <span>Completion</span>
+
+            <span>{progress.percentage}%</span>
           </div>
         </div>
       </div>

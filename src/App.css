@@ -86,11 +86,21 @@ button:hover {
 
 .realtime-progress {
   margin-top: 15px;
-  background: black;
-  color: lime;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  padding: 14px 18px;
+  color: #222;
+  font-size: 18px;
+  border: 1px solid #ddd;
+}
+
+.progress-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.progress-row:last-child {
+  margin-bottom: 0;
 }
 
