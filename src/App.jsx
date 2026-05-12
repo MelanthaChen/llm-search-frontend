@@ -40,10 +40,6 @@ function App() {
   const [loading, setLoading] =
     useState(false);
 
-  // Current experiment phase
-  const [phase, setPhase] =
-    useState("Idle");
-
   // Frontend timer
   const [elapsedTime, setElapsedTime] =
     useState("0.0");
@@ -118,14 +114,6 @@ function App() {
       });
 
       try {
-        /**
-         * Step 1:
-         * Prepare experiment.
-         */
-        setPhase(
-          "Preparing baseline recommendation and exposure population...",
-        );
-
         const prepared =
           await axios.post(
             "https://llm-search-optimizer-backend.onrender.com/prepare-experiment",
@@ -168,6 +156,16 @@ function App() {
                 setProgress(
                   progressRes.data,
                 );
+                if (
+                  progressRes.data.phase ===
+                    "Running Exposure Sessions" &&
+                  !timerRef.current
+                ) {
+                  console.log(
+                    "Exposure phase detected. Starting timer.",
+                  );
+                  startTimer();
+                }
               } catch (err) {
                 console.error(
                   "Polling error:",
@@ -175,33 +173,18 @@ function App() {
                 );
               }
             },
-            1000,
+            300,
           );
 
-        /**
-         * Step 2:
-         * Run exposure simulation.
-         */
-        setPhase(
-          "Running simulated user exposure sessions...",
-        );
+        const exposurePromise =
+          axios.post(
+            "https://llm-search-optimizer-backend.onrender.com/run-exposure",
+            {
+              sessionId,
+            },
+          );
 
-        startTimer();
-
-        await axios.post(
-          "https://llm-search-optimizer-backend.onrender.com/run-exposure",
-          {
-            sessionId,
-          },
-        );
-
-        /**
-         * Step 3:
-         * Final evaluation.
-         */
-        setPhase(
-          "Evaluating final recommendation drift...",
-        );
+        await exposurePromise;
 
         const finalResult =
           await axios.post(
@@ -231,7 +214,6 @@ function App() {
           percentage: 100,
         });
 
-        setPhase("Done");
       } catch (err) {
         stopTimer();
 
@@ -240,8 +222,6 @@ function App() {
         alert(
           "Error running experiment",
         );
-
-        setPhase("Error");
       }
 
       setLoading(false);
@@ -258,7 +238,7 @@ function App() {
       <div className="status-panel">
         <p>
           <b>Status:</b>{" "}
-          {phase}
+          {progress.phase}
         </p>
 
         <div className="progress-bar-background">
