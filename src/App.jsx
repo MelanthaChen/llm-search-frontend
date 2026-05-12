@@ -203,6 +203,68 @@ function App() {
           finalResult.data,
         );
 
+        /**
+        * Auto-download experiment files
+        */
+        const files =
+          finalResult.data
+            .downloadableFiles;
+
+        const downloadFile = (
+          content,
+          filename,
+          type,
+        ) => {
+          const blob = new Blob(
+            [content],
+            { type },
+          );
+
+          const url =
+            URL.createObjectURL(blob);
+
+          const a =
+            document.createElement("a");
+
+          a.href = url;
+
+          a.download = filename;
+
+          a.click();
+
+          URL.revokeObjectURL(url);
+        };
+
+        const timestamp =
+          Date.now();
+
+        /**
+        * Download full JSON
+        */
+        downloadFile(
+          files.fullJson,
+          `experiment-${timestamp}.json`,
+          "application/json",
+        );
+
+        /**
+        * Download summary CSV
+         */
+        downloadFile(
+          files.summaryCsv,
+          `experiment-summary-${timestamp}.csv`,
+          "text/csv",
+        );
+
+        /**
+        * Download sessions CSV
+        */
+        downloadFile(
+          files.sessionsCsv,
+          `experiment-sessions-${timestamp}.csv`,
+          "text/csv",
+        );
+        
         stopTimer();
 
         setProgress({
