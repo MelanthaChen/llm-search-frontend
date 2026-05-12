@@ -476,30 +476,31 @@ function App() {
 
           <hr />
 
-          <h3>
-            Initial Answer
-          </h3>
+            <div className="answer-comparison">
+              <div className="answer-box">
+                <h3>Initial Answer</h3>
 
-          <pre>
-            {
-              result.allRuns?.[0]
-                ?.chatA
-                ?.initialAnswer
-            }
-          </pre>
+                <pre>
+                  {
+                    result.allRuns?.[0]
+                      ?.chatA
+                      ?.initialAnswer
+                  }
+                </pre>
+              </div>
 
-          <h3>
-            Final Answer
-          </h3>
+              <div className="answer-box">
+                <h3>Final Answer</h3>
 
-          <pre>
-            {
-              result.allRuns?.[0]
-                ?.chatA
-                ?.finalAnswer
-            }
-          </pre>
-
+                <pre>
+                  {
+                    result.allRuns?.[0]
+                      ?.chatA
+                      ?.finalAnswer
+                  }
+                </pre>
+              </div>
+            </div>
           <hr />
 
           <h3>
