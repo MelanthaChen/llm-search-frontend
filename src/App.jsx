@@ -4,6 +4,8 @@ import axios from "axios";
 
 import "./App.css";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function App() {
   // Question input
   const [question, setQuestion] = useState("");
@@ -91,17 +93,14 @@ function App() {
     });
 
     try {
-      const prepared = await axios.post(
-        "https://llm-search-optimizer-backend.onrender.com/prepare-experiment",
-        {
-          question,
-          target,
-          topN: Number(topN),
-          iterations: Number(iterations),
-          runs: Number(runs),
-          model,
-        },
-      );
+      const prepared = await axios.post(`${API_BASE_URL}/prepare-experiment`, {
+        question,
+        target,
+        topN: Number(topN),
+        iterations: Number(iterations),
+        runs: Number(runs),
+        model,
+      });
 
       const sessionId = prepared.data.sessionId;
 
@@ -113,7 +112,7 @@ function App() {
       progressRef.current = setInterval(async () => {
         try {
           const progressRes = await axios.get(
-            `https://llm-search-optimizer-backend.onrender.com/experiment-progress/${sessionId}`,
+            `${API_BASE_URL}/experiment-progress/${sessionId}`,
           );
 
           console.log("LIVE PROGRESS:", progressRes.data);
@@ -131,17 +130,14 @@ function App() {
         }
       }, 300);
 
-      const exposurePromise = axios.post(
-        "https://llm-search-optimizer-backend.onrender.com/run-exposure",
-        {
-          sessionId,
-        },
-      );
+      const exposurePromise = axios.post(`${API_BASE_URL}/run-exposure`, {
+        sessionId,
+      });
 
       await exposurePromise;
 
       const finalResult = await axios.post(
-        "https://llm-search-optimizer-backend.onrender.com/finish-experiment",
+        `${API_BASE_URL}/finish-experiment`,
         {
           sessionId,
         },
